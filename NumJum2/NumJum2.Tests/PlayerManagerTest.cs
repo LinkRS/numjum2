@@ -112,31 +112,30 @@ namespace NumJum2.Tests
                 SaveGood = false;
             int testNumScores = 2;
             PlayerManager testManager;
-            List<int> testScores = new List<int>() { 99, 23, 0, 0, 0 };    // Test score ArrayList
+            List<int> testScores = new List<int>() { 99, 23 };    // Test score ArrayList
             Player newPlayer = new Player(testName, testStatus,
                                         testNumScores, testScores);
 
-            // Attempt to save player to file system
+            // Try to save Player using Manager
+            testManager = new PlayerManager();
             try
             {
-                testManager = new PlayerManager();
                 SaveGood = testManager.SavePlayer(newPlayer, testName);
             }
             catch (IOException e)
             {
                 Console.WriteLine(e.Message);
-                Assert.Fail("Unable to create test file");
+                Assert.Fail("Unable to create player object");
             }
 
-            //Test if file has been created
-            //Create path for test
-            string filePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\NumJum\\",
-                filePath2 = Environment.GetEnvironmentVariable("TEMP") + "\\NumJum\\";
-            Console.WriteLine("Path is: " + filePath + testName + ".bin");
-            Console.WriteLine("Temp Path is: " + filePath2 + testName + ".bin");
+            //Test if player was saved to database
+            //Create compare player using database
+            Player comparePlayer = null;
+            comparePlayer = testManager.LoadPlayer(testName);
 
-            Assert.IsTrue(File.Exists(filePath + testName + ".bin"));
+            Assert.AreEqual(testName, comparePlayer.PlayerName);
             Assert.IsTrue(SaveGood);
+
         }
 
         [TestMethod]
