@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.ComponentModel.DataAnnotations;
 
 namespace NumJum2.Domain
 {
@@ -78,7 +79,7 @@ namespace NumJum2.Domain
             _ScoreList.Add(score);
             // Sort List
             _ScoreList.Sort();
-           // Increment Counter
+            // Increment Counter
             IncScore();
         }
 

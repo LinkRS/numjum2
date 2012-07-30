@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>NumJum 2 (22 July 2012)</title>
+    <title>NumJum 2 (29 July 2012)</title>
 </head>
 <body style="background-color: Silver;">
     <form id="MainForm" runat="server">
@@ -203,6 +203,10 @@
                     style="left: 95px; top: 109px; position: absolute" 
                     Text="Submit" onclick="SubmitButton_Click"/>
                 
+                <asp:Button ID="DeletePlayerButton" runat="server"
+                    style="left: 195px; top: 109px; position: absolute"
+                    Text="Delete" onclick="DeletePlayerButton_Click" />
+
                 <asp:Button ID="Cancel" runat="server" 
                     style="left: 295px; top: 109px; position: absolute" 
                     Text="Cancel" onclick="SubmitButton_Click"/>
@@ -225,7 +229,20 @@
 
         <asp:View ID="View3" runat="server">
             <div style="width: 922px; height: 436px" title="MainView">
-            <br/>CONTENTS OF TAB3(view3)
+            <br/>
+            <center><p>NumJum 2.01 (Build 2.00.175)
+            <br />
+            Build Date: 29 July 2012
+            <br />
+            <br />
+            Written By: Rich Selmon
+            <br />
+            Wombat Computer Service
+            <br />
+            <a href="http://www.wombatcs.com">http://www.wombatcs.com</a>
+            <br />
+            <br />
+            Copyright (C) 2102</p></center>
             </div>     
        </asp:View>
 

@@ -10,8 +10,8 @@ namespace NumJum2.Services
 
     public interface IPlayerSvc : IService
     {
-        bool SavePlayerState(Player player, string storeName);
-        Player LoadPlayerData(string storeName);
+        bool SavePlayerToDb(Player player);
+        Player GetPlayerFromDb(string playerName);
         void SetGameState(Player player, bool state);
         void AddPlayerScore(Player player, int score);
         int GetIndexScore(Player player, int scoreIdx);

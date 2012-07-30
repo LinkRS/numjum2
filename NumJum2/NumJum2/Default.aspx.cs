@@ -1,11 +1,13 @@
 ﻿using System;
 using NumJum2.Business;
 using NumJum2.Domain;
+using NumJum2.Services.DAL;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+
 
 namespace NumJum2
 {
@@ -270,6 +272,43 @@ namespace NumJum2
             LoadPlayerAction();
         }
 
+        protected void DeletePlayerButton_Click(object sender, EventArgs e)
+        {
+            // Delete selected player from Database if exists
+            if (this.EnteredNameTextBox.Text.Length > 0)
+            {
+                using (var db = new PlayerDbContext())
+                {
+                    foreach (PlayerDb checkDb in db.PlayersDb)
+                    {
+                        // Remove Scores first
+                        if (checkDb.NumScores > 0)
+                        {
+                            foreach (PlayerScore checkScore in db.PlayerScores)
+                            {
+                                if (checkScore.PlayerDbID == checkDb.PlayerDbID)
+                                    db.PlayerScores.Remove(checkScore);
+                            }
+                        }
+
+                        if (checkDb.PlayerName == this.EnteredNameTextBox.Text)
+                        {
+                            db.PlayersDb.Remove(checkDb);
+                            db.SaveChanges();
+                        }
+                    }
+
+                    // Clear Entered Text box
+                    ClearForm();
+                    this.FeedbackListBox.Items.Add(EnteredNameTextBox.Text + " deleted!");
+                    this.EnteredNameTextBox.Text = "";
+                    db.Dispose();
+                }
+            }
+            else
+                this.FeedbackListBox.Items.Add("No player to delete!");
+        }
+
         protected void AddScoreButton_Click(object sender, EventArgs e)
         {
             // Debug function to add scores to player object for testing
@@ -285,7 +324,7 @@ namespace NumJum2
                 GamePlayer.AddScore(randomScore);
 
                 // Update Feedback
-                this.FeedbackListBox.Items.Add("Added " + randomScore.ToString() + " to " + GamePlayer.PlayerName);
+                this.FeedbackListBox.Items.Add("Added " + randomScore.ToString() + " to " + GamePlayer.PlayerName);;
 
                 // Load player scores from object
                 FillScoreList(GamePlayer);

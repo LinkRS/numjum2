@@ -7,6 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 using NumJum2.Domain;
 using NumJum2.Services;
+using NumJum2.Services.Exceptions;
 
 namespace NumJum2.Tests
 {
@@ -18,19 +19,19 @@ namespace NumJum2.Tests
         ///
         public void SavePlayerTest()
         {
-            string fileName = "Link";                                       // File name for test
-            List<int> scores = new List<int>() { 14, 3, 6, 0, 0 };          // Test score ArrayList       
-            Player target = new Player(fileName, false, 3, scores);
+            string testName = "Link";                                       // Name for test
+            List<int> scores = new List<int>() { 14, 3, 6};                 // Test score ArrayList       
+            Player target = new Player(testName, false, 3, scores);
             bool SaveGood = false;
 
             Factory testFactory = Factory.GetInstance();                    // Use Singleton pattern for Factory
             IPlayerSvc testSVC = (IPlayerSvc)
                 testFactory.GetService(typeof(IPlayerSvc).Name);            // Test SVC via an interface
 
-            // Try to save PlayerState
+            // Try to save Player using service
             try
             {
-                SaveGood = testSVC.SavePlayerState(target, fileName);
+                SaveGood = testSVC.SavePlayerToDb(target);
             }
             catch (IOException e)
             {
@@ -38,14 +39,11 @@ namespace NumJum2.Tests
                 Assert.Fail("Unable to create player object");
             }
 
-            //Test if file has been created
-            //Create path for test
-            string filePath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\NumJum\\",
-                filePath2 = Environment.GetEnvironmentVariable("TEMP") + "\\NumJum\\";
-            Console.WriteLine("Path is: " + filePath + fileName + ".bin");
-            Console.WriteLine("Temp Path is: " + filePath2 + fileName + ".bin");
+            //Test if player was saved to database
+            //Create compare player using database
+            Player comparePlayer = testSVC.GetPlayerFromDb(testName);
 
-            Assert.IsTrue(File.Exists(filePath + fileName + ".bin"));
+            Assert.AreEqual(testName, comparePlayer.PlayerName);
             Assert.IsTrue(SaveGood);
         }
 
@@ -56,25 +54,23 @@ namespace NumJum2.Tests
         {
             // Create file and data for testing
             // Test parameters
-            string testName = "Zelda";
+            string testName = "Ash";
             bool testStatus = true;
-            int testNumScores = 3;
+            int testNumScores = 4;
             Player testPlayer = null;
-            List<int> testScores = new List<int>() { 60, 32, 15, 4, 0 };    // Test score ArrayList
+            List<int> testScores = new List<int>() { 60, 32, 15, 4};    // Test score ArrayList
             Player newPlayer = new Player(testName, testStatus,
                                         testNumScores, testScores);
-
-            string fileName = "Zelda";                                      // File name for test
 
             Factory testFactory = Factory.GetInstance();                    // Factory instance using Singleton pattern
             IPlayerSvc testSVC = (IPlayerSvc)                               // Test Service using in interface marker
                 testFactory.GetService(typeof(IPlayerSvc).Name);
 
 
-            // Create player data file for testing
+            // Create player in DB for test
             try
             {
-                testSVC.SavePlayerState(newPlayer, fileName);
+                testSVC.SavePlayerToDb(newPlayer);
             }
             catch (IOException e)
             {
@@ -82,15 +78,15 @@ namespace NumJum2.Tests
                 Assert.Fail("Save Player Failed");
             }
 
-            // Try to Create player object from file
+            // Try to Create player object from DB
             try
             {
-                testPlayer = testSVC.LoadPlayerData(fileName);
+                testPlayer = testSVC.GetPlayerFromDb(testName);
             }
-            catch (IOException e)
+            catch (PlayerNotFoundException e)
             {
                 Console.WriteLine(e.Message);
-                Assert.Fail("Unable to load player data from file");
+                Assert.Fail("Unable to load player data from database");
             }
 
             //Test if player data has been loaded
@@ -99,6 +95,7 @@ namespace NumJum2.Tests
             Assert.AreEqual(testPlayer.NumberOfScores, testNumScores);
 
             //Test arbitrary list value
+            testScores.Sort();
             Assert.AreEqual(testPlayer.ScoreList[1], testScores[1]);
         }
 
@@ -118,24 +115,24 @@ namespace NumJum2.Tests
             // Create player object from file
             try
             {
-                testPlayer = testSVC.LoadPlayerData(fileName);
+                testPlayer = testSVC.GetPlayerFromDb(fileName);
             }
             catch (PlayerNotFoundException)
             {
-                Console.WriteLine("Caught Exception in Test");
+                testPlayer = new Player("Caught");
             }
             finally
             {
                 //Test if player is created based on input filename
                 //If the exception is caught and handled,  it should
-                //Create a new player with the specified name
-                Assert.AreEqual(testPlayer.PlayerName, fileName);
+                //have the name 'Caught'
+                Assert.AreEqual(testPlayer.PlayerName, "Caught");
             }
 
         }
 
         [TestMethod]
-        /// Test setting the game state using the Player Service
+        /// Test for
         ///
         public void SetGameStateTest()
         {

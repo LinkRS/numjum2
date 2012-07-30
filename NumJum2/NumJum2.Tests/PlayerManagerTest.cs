@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using NumJum2.Domain;
 using NumJum2.Services;
+using NumJum2.Services.Exceptions;
 using NumJum2.Business;
 using System.Linq;
 using System.IO;
@@ -28,7 +29,7 @@ namespace NumJum2.Tests
             int testNumScores = 4;
             Player testPlayer = new Player();
             PlayerManager testManager = new PlayerManager();
-            List<int> testScores = new List<int>() { 60, 32, 15, 4, 0 };    // Test score ArrayList
+            List<int> testScores = new List<int>() { 60, 32, 15, 4};    // Test score ArrayList
             Player newPlayer = new Player(testName, testStatus,
                                         testNumScores, testScores);
 
@@ -39,7 +40,7 @@ namespace NumJum2.Tests
             // Create file for test
             try
             {
-                testSVC.SavePlayerState(newPlayer, testName);
+                testSVC.SavePlayerToDb(newPlayer);
             }
             catch (IOException e)
             {
@@ -65,6 +66,8 @@ namespace NumJum2.Tests
             Assert.AreEqual(testPlayer.NumberOfScores, testNumScores);
 
             //Test arbitrary list value
+            // Sort test array first
+            testScores.Sort();
             Assert.AreEqual(testPlayer.ScoreList[1], testScores[1]);
         }
 

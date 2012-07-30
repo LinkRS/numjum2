@@ -7,6 +7,7 @@ using System.Text;
 using System.IO;
 using NumJum2.Domain;
 using NumJum2.Services;
+using NumJum2.Services.Exceptions;
 
 namespace NumJum2.Business
 {
@@ -14,13 +15,21 @@ namespace NumJum2.Business
     {
         public Player LoadPlayer(string storeName)
         {
-            IPlayerSvc playSvc =
-                (IPlayerSvc)GetService(typeof(IPlayerSvc).Name);
+            try
+            {
+                IPlayerSvc playSvc =
+                    (IPlayerSvc)GetService(typeof(IPlayerSvc).Name);
 
-            // Return with new player, if file exception occurs
-            // it should stil return with a default player object
-            return playSvc.LoadPlayerData(storeName);
+                // Return loaded player
+                return playSvc.GetPlayerFromDb(storeName);
+            }
+            catch (PlayerNotFoundException e)
+            {
+                Console.WriteLine(e.Message);
 
+                // Player not found, crete a new one
+                return new Player(storeName);
+            }
         }
 
         public bool SavePlayer(Player player, string storeName)
@@ -33,8 +42,8 @@ namespace NumJum2.Business
             // Check for file exceptions
             try
             {
-                playSvc.SavePlayerState(player, storeName);
-                SaveGood = true;
+                //playSvc.SavePlayerState(player, storeName);
+                SaveGood = playSvc.SavePlayerToDb(player);
 
             }
             catch (IOException e)
