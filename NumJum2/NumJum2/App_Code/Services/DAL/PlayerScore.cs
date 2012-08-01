@@ -11,7 +11,7 @@ namespace NumJum2.Services.DAL
         public int PlayerScoreID { get; set; }
         public int PlayerDbID { get; set; }
         public int Score { get; set; }
-        public virtual PlayerDb PlayerDb { get; set; }
+        //public virtual PlayerDb PlayerDb { get; set; }
     }
 
 }

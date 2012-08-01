@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>NumJum 2 (29 July 2012)</title>
+    <title>NumJum 2 (31 July 2012)</title>
 </head>
 <body style="background-color: Silver;">
     <form id="MainForm" runat="server">
@@ -230,9 +230,9 @@
         <asp:View ID="View3" runat="server">
             <div style="width: 922px; height: 436px" title="MainView">
             <br/>
-            <center><p>NumJum 2.01 (Build 2.00.175)
+            <center><p>NumJum 2.01 (Build 2.00.195)
             <br />
-            Build Date: 29 July 2012
+            Build Date: 31 July 2012
             <br />
             <br />
             Written By: Rich Selmon

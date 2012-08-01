@@ -18,7 +18,7 @@ namespace NumJum2.Services.DAL
             this.Configuration.LazyLoadingEnabled = false;
 
             // Rebuild model if schema changes
-            /*Database.SetInitializer<PlayerDbContext>
+            /* Database.SetInitializer<PlayerDbContext>
                 (new DropCreateDatabaseIfModelChanges<PlayerDbContext>()); */
         }
     }
