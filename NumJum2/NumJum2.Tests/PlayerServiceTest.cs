@@ -132,7 +132,43 @@ namespace NumJum2.Tests
         }
 
         [TestMethod]
-        /// Test for
+        /// Test for the delete player data
+        /// 
+        public void DeletePlayerTest()
+        {
+            bool testDelete = false;
+
+            // Test Parameters
+            string deleteName = "Tinkle",
+                   testName = "Frank",
+                   testName2 = "June";
+            List<int> tinkleScores = new List<int>() { 12, 56, 65, 90 };
+            List<int> testScores = new List<int>() { 1, 2, 3 };
+            List<int> testScores2 = new List<int>() { 5, 6, 7, 8 };
+
+            Player deletePlayer = new Player(deleteName, false, 4, tinkleScores);
+            Player testPlayer1 = new Player(testName, false, 3, testScores);
+            Player testPlayer2 = new Player(testName2, false, 4, testScores2);
+
+            Factory testFactory = Factory.GetInstance();
+
+            IPlayerSvc testSVC = (IPlayerSvc)
+                testFactory.GetService(typeof(IPlayerSvc).Name);
+
+            // Add players to DB for 
+            testSVC.SavePlayerToDb(testPlayer1);
+            testSVC.SavePlayerToDb(deletePlayer);
+            testSVC.SavePlayerToDb(testPlayer2);
+
+            // Delete testPlayer and test return value
+            testDelete = testSVC.DeletePlayer(deleteName);
+
+            Assert.IsTrue(testDelete);
+        }
+
+
+        [TestMethod]
+        /// Test for setting the game status
         ///
         public void SetGameStateTest()
         {

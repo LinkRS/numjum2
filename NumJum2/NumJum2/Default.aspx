@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>NumJum 2 (31 July 2012)</title>
+    <title>NumJum 2 (2 Aug 2012)</title>
 </head>
 <body style="background-color: Silver;">
     <form id="MainForm" runat="server">
@@ -177,7 +177,7 @@
             <asp:ScriptManager ID="sc1" runat="server">
             </asp:ScriptManager>
 
-            <ajaxtoolkit:modalpopupextender ID="mpe" runat="server"
+            <ajaxToolkit:modalpopupextender ID="mpe" runat="server"
                 TargetControlID = "HiddenButton"
                 PopupControlID="ModalPanel"  
                 CancelControlID="Cancel" 
@@ -230,9 +230,9 @@
         <asp:View ID="View3" runat="server">
             <div style="width: 922px; height: 436px" title="MainView">
             <br/>
-            <center><p>NumJum 2.01 (Build 2.00.195)
+            <center><p>NumJum 2.01 (Build 2.01.045)
             <br />
-            Build Date: 31 July 2012
+            Build Date: 2 August 2012
             <br />
             <br />
             Written By: Rich Selmon

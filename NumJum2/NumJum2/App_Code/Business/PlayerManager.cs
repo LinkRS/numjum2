@@ -57,6 +57,14 @@ namespace NumJum2.Business
             return SaveGood;
         }
 
+        public bool DeletePlayerData(string playerName)
+        {
+            IPlayerSvc playSvc =
+                (IPlayerSvc)GetService(typeof(IPlayerSvc).Name);
+
+            return playSvc.DeletePlayer(playerName);
+        }
+
         public void UpdateGameState(Player player, bool gamestate)
         {
             IPlayerSvc playSvc =

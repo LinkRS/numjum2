@@ -20,14 +20,14 @@ namespace NumJum2.Services
 
             PlayerDb AddPlayer = null;
             int HoldPlayerDbID = 0;
-
-            /* Get a context to the DB and save the passed object*/
-            using (var db = new PlayerDbContext())
+            
+            try
             {
-                try
-                {
-                    // If a player exisits in db, find and attach to a context to update
+                // If a player exisits in db, find and attach to a context to update
                 
+                // Get a context to the DB and save the passed object
+                using (var db = new PlayerDbContext())
+                {
                     foreach (PlayerDb findPlayer in db.PlayersDb)
                     {
                         if (findPlayer.PlayerName == player.PlayerName)
@@ -52,10 +52,17 @@ namespace NumJum2.Services
                         db.SaveChanges();
                         HoldPlayerDbID = AddPlayer.PlayerDbID;
                     }
+                    // Close DB
+                    db.Dispose();
+                }
 
-                    // If there are scores, update PlayerScores object
+                // If there are scores, update PlayerScores object
+                // Get a context to the DB and save the passed object
+                using (var db = new PlayerDbContext())
+                {
                     if (player.NumberOfScores > 0)
                     {
+
                         // Remove Scores first to compensate for score
                         // auto-sorting in domain object
                         foreach (PlayerScore checkScore in db.PlayerScores)
@@ -77,17 +84,15 @@ namespace NumJum2.Services
                     }
 
                     db.SaveChanges();
+                    db.Dispose();
                     // No errors, set return value
                     SaveGood = true;
                 }
-                catch (Exception e)
-                {
-                    Console.WriteLine("DB store exception" + e.Message);
-                    SaveGood = false;
-                }
-
-                // Close db connection
-                db.Dispose();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("DB store exception" + e.Message);
+                SaveGood = false;
             }
             return SaveGood;
         }
@@ -96,13 +101,15 @@ namespace NumJum2.Services
         {
             Player getPlayer = null;
 
-            // Get a context to the DB and find passed player
+
+            // Holding Entity Object
+            PlayerDb holdPlayer = new PlayerDb();
+
+            // Get data from database
+            // Get a context to the db
             using (var db = new PlayerDbContext())
             {
-                // Holding Entity Object
-                PlayerDb holdPlayer = new PlayerDb();
 
-                // Get data from database
                 foreach (PlayerDb findPlayer in db.PlayersDb)
                 {
                     if (findPlayer.PlayerName == PlayerName)
@@ -114,28 +121,72 @@ namespace NumJum2.Services
                         getPlayer.NumberOfScores = 0;
 
                         // If there are scores, need to load up player
-                        if (findPlayer.NumScores > 0)
+                        // Get a context to the DB
+                        using (var db1 = new PlayerDbContext())
                         {
-                            foreach (PlayerScore findScore in db.PlayerScores)
+                            if (findPlayer.NumScores > 0)
                             {
-                                if (findScore.PlayerDbID == findPlayer.PlayerDbID)
+                                foreach (PlayerScore findScore in db.PlayerScores)
                                 {
-                                    getPlayer.AddScore(findScore.Score);
+                                    if (findScore.PlayerDbID == findPlayer.PlayerDbID)
+                                    {
+                                        getPlayer.AddScore(findScore.Score);
+                                    }
                                 }
                             }
+                            // Close DB
+                            db1.Dispose();
                         }
                     }
                 }
-
-                // Check to see if player was loaded, and if not throw exception
-                if (getPlayer == null)
-                    throw new PlayerNotFoundException("Player not found in DB");
-
-                // Close db connection
+                // Close DB
                 db.Dispose();
             }
 
+            // Check to see if player was loaded, and if not throw exception
+            if (getPlayer == null)
+            {
+                throw new PlayerNotFoundException("Player not found in DB");
+            }
             return getPlayer;            
+        }
+
+        public bool DeletePlayer(string playerName)
+        {
+            bool DeleteGood = false;
+
+            using (var db = new PlayerDbContext())
+            {
+                foreach (PlayerDb checkDb in db.PlayersDb)
+                {
+                    // Search through DB for player
+                    if (checkDb.PlayerName == playerName)
+                    {
+                    // If there are scores, remove them first
+                        if (checkDb.NumScores > 0)
+                        {
+                            using (var db1 = new PlayerDbContext())
+                            {
+                                foreach (PlayerScore remScore in db1.PlayerScores)
+                                {
+                                    if (checkDb.PlayerDbID == remScore.PlayerDbID)
+                                    {
+                                        db1.PlayerScores.Remove(remScore);
+                                    }
+                                }
+                                db1.SaveChanges();
+                                db1.Dispose();
+                            }
+                        }
+
+                        db.PlayersDb.Remove(checkDb);
+                    }
+                }
+                db.SaveChanges();
+                db.Dispose();
+                DeleteGood = true;
+            }
+            return DeleteGood;
         }
 
         public void SetGameState(Player player, bool gamestate)

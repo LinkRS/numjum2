@@ -139,6 +139,39 @@ namespace NumJum2.Tests
         }
 
         [TestMethod]
+        /// Test for the delete player data
+        /// 
+        public void PMDeletePlayerTest()
+        {
+            bool testDelete = false;
+
+            // Test Parameters
+            string deleteName = "Bunny",
+                   testName = "Hugh",
+                   testName2 = "Randall";
+            List<int> tinkleScores = new List<int>() { 2, 6, 9, 90 };
+            List<int> testScores = new List<int>() { 45, 87, 99 };
+            List<int> testScores2 = new List<int>() { 5, 6, 7, 8 };
+
+            Player deletePlayer = new Player(deleteName, false, 4, tinkleScores);
+            Player testPlayer1 = new Player(testName, false, 3, testScores);
+            Player testPlayer2 = new Player(testName2, false, 4, testScores2);
+
+            PlayerManager testPlayMngr = new PlayerManager();
+
+            // Add players to DB for
+            testPlayMngr.SavePlayer(testPlayer1, testName);
+            testPlayMngr.SavePlayer(deletePlayer, deleteName);
+            testPlayMngr.SavePlayer(testPlayer2, testName2);
+
+            // Delete testPlayer and test return value
+            testDelete = testPlayMngr.DeletePlayerData(deleteName);
+
+            Assert.IsTrue(testDelete);
+        }
+
+
+        [TestMethod]
         ///A test of using the Player Manager to retrive an indvidual
         ///score from player object
         ///

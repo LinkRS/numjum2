@@ -274,39 +274,23 @@ namespace NumJum2
 
         protected void DeletePlayerButton_Click(object sender, EventArgs e)
         {
-            // Delete selected player from Database if exists
+            // Use PlayerManager to delete selected Player object
+            // Use Manager to load player data
+            PlayerManager playerManager = new PlayerManager();
             if (this.EnteredNameTextBox.Text.Length > 0)
             {
-                using (var db = new PlayerDbContext())
+
+                if (playerManager.DeletePlayerData(this.EnteredNameTextBox.Text))
                 {
-                    foreach (PlayerDb checkDb in db.PlayersDb)
-                    {
-                        // Remove Scores first
-                        if (checkDb.NumScores > 0)
-                        {
-                            foreach (PlayerScore checkScore in db.PlayerScores)
-                            {
-                                if (checkScore.PlayerDbID == checkDb.PlayerDbID)
-                                    db.PlayerScores.Remove(checkScore);
-                            }
-                        }
-
-                        if (checkDb.PlayerName == this.EnteredNameTextBox.Text)
-                        {
-                            db.PlayersDb.Remove(checkDb);
-                            db.SaveChanges();
-                        }
-                    }
-
                     // Clear Entered Text box
                     ClearForm();
                     this.FeedbackListBox.Items.Add(EnteredNameTextBox.Text + " deleted!");
                     this.EnteredNameTextBox.Text = "";
-                    db.Dispose();
+                    this.PlayerNameTextBox.Text = "";
                 }
             }
             else
-                this.FeedbackListBox.Items.Add("No player to delete!");
+                this.FeedbackListBox.Items.Add("No player selected to delete");;
         }
 
         protected void AddScoreButton_Click(object sender, EventArgs e)
@@ -339,7 +323,5 @@ namespace NumJum2
             }
 
         }
-
-
     }
 }
