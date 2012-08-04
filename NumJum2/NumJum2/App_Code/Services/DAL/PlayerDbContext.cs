@@ -18,7 +18,7 @@ namespace NumJum2.Services.DAL
             this.Configuration.LazyLoadingEnabled = false;
 
             // Force database to be rebuilt
-            Database.SetInitializer<PlayerDbContext>(new DropCreateDatabaseAlways<PlayerDbContext>());
+            //Database.SetInitializer<PlayerDbContext>(new DropCreateDatabaseAlways<PlayerDbContext>());
 
             // Rebuild model if schema changes
             /*Database.SetInitializer<PlayerDbContext>
