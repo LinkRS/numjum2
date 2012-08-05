@@ -13,6 +13,5 @@ namespace NumJum2.Services.DAL
         public string PlayerName { get; set; }
         public bool GameStatus { get; set; }
         public int NumScores { get; set; }
-        //public virtual ICollection<PlayerScore> ScoreList { get; set; } 
     }
 }

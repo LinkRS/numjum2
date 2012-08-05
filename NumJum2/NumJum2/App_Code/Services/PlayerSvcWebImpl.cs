@@ -65,6 +65,9 @@ namespace NumJum2.Services
 
                         // Remove Scores first to compensate for score
                         // auto-sorting in domain object
+                        // otherwise database would have to be sorted and a
+                        // comparison done to insert new scores
+                        // this is simpiler :-)
                         foreach (PlayerScore checkScore in db.PlayerScores)
                         {
                             if (checkScore.PlayerDbID == HoldPlayerDbID)

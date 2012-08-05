@@ -16,7 +16,8 @@ namespace NumJum2
 
         protected void Application_Start(object sender, EventArgs e)
         {
-            using (var dbContext = new PlayerDbContext())
+            // Use to create initial database, then comment it out!!
+            /* using (var dbContext = new PlayerDbContext())
             {
                 if (!dbContext.Database.Exists())
                 {
@@ -24,9 +25,11 @@ namespace NumJum2
                 }
 
                 dbContext.Dispose();
+
             }
-
-
+            // Seed Database for testing purposes
+            // Comment out for actual deployment
+            Database.SetInitializer<PlayerDbContext>(new PlayerDbInitializer()); */
         }
 
         protected void Session_Start(object sender, EventArgs e)

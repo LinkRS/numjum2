@@ -69,8 +69,10 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AdminLogin.aspx" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
+    <Content Include="Restricted\DatabaseDisplayPage.aspx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -82,12 +84,20 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AdminLogin.aspx.cs">
+      <DependentUpon>AdminLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="AdminLogin.aspx.designer.cs">
+      <DependentUpon>AdminLogin.aspx</DependentUpon>
+    </Compile>
     <Compile Include="App_Code\Business\GameManager.cs" />
     <Compile Include="App_Code\Business\JumbledNumberManager.cs" />
     <Compile Include="App_Code\Business\Manager.cs" />
     <Compile Include="App_Code\Business\PlayerManager.cs" />
     <Compile Include="App_Code\Domain\JumbledNumber.cs" />
     <Compile Include="App_Code\Domain\Player.cs" />
+    <Compile Include="App_Code\Services\DAL\PlayerDbInitializer.cs" />
     <Compile Include="App_Code\Services\DAL\PlayerDb.cs" />
     <Compile Include="App_Code\Services\DAL\PlayerScore.cs" />
     <Compile Include="App_Code\Services\Factory.cs" />
@@ -108,6 +118,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Restricted\DatabaseDisplayPage.aspx.cs">
+      <DependentUpon>DatabaseDisplayPage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Restricted\DatabaseDisplayPage.aspx.designer.cs">
+      <DependentUpon>DatabaseDisplayPage.aspx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -123,7 +140,7 @@
         <WebProjectProperties>
           <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
-          <DevelopmentServerPort>49166</DevelopmentServerPort>
+          <DevelopmentServerPort>49167</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
           <IISUrl>
           </IISUrl>

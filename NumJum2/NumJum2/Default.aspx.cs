@@ -79,6 +79,7 @@ namespace NumJum2
             this.NumCorrectDigitsTextBox.Text = "";
             this.CurrentGuessTextBox.Text = "";
             this.CurrentScoreBox.Text = "";
+            this.ScoreListBox.Items.Clear();
         }
 
         private void AddKeyPress(int KeyNum)
@@ -152,6 +153,41 @@ namespace NumJum2
 
         }
 
+        private void DeletePlayerAction()
+        {
+            // Use PlayerManager to delete selected Player object
+            // Use Manager to load player data
+
+            // Retrieve session object if available
+            if (Session["Player"] != null)
+                GamePlayer = (Player)Session["Player"];
+            
+
+            PlayerManager playerManager = new PlayerManager();
+            if ((this.PlayerNameTextBox.Text.Length > 0) && (GamePlayer != null))
+            {
+                if (GamePlayer.PlayerName == this.PlayerNameTextBox.Text)
+                {
+                    if (playerManager.DeletePlayerData(this.EnteredNameTextBox.Text))
+                    {
+                        // Clear Entered Text box
+                        ClearForm();
+                        this.FeedbackListBox.Items.Add(EnteredNameTextBox.Text + " deleted!");
+                        this.EnteredNameTextBox.Text = "";
+                        this.PlayerNameTextBox.Text = "";
+                        Session.Remove("Player");
+                    }
+                }
+                else
+                {
+                    this.FeedbackListBox.Items.Add("Loaded player mismatch!");
+                }
+
+            }
+            else
+                this.FeedbackListBox.Items.Add("Plaer not loaded, delete aborted"); ;
+        }
+
         private void SavePlayerAction()
         {
             // Save player data if player is loaded //
@@ -184,7 +220,13 @@ namespace NumJum2
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
+            {
                 MultiView1.ActiveViewIndex = 0;
+                ClearForm();
+                this.FeedbackListBox.Items.Add("Welcome, please load a player to begin.");
+            }
+            else
+                this.FeedbackListBox.Items.Add("Load Player to Begin!");
         }
 
         protected void MainView_MenuItemClick(object sender, MenuEventArgs e)
@@ -204,8 +246,14 @@ namespace NumJum2
                 case "SaveMenu":
                     SavePlayerAction();
                     break;
+                case "DeleteMenu":
+                    DeletePlayerAction();
+                    break;
                 case "StartGameMenu":
                     this.FeedbackListBox.Items.Add("TODO Start new game");
+                    break;
+                case "LoginMenu":
+                    Response.Redirect("\\Restricted\\DatabaseDisplayPage.aspx");
                     break;
                 default:
                     this.FeedbackListBox.Items.Add("Punt!! No Action");
@@ -270,27 +318,6 @@ namespace NumJum2
         protected void SubmitButton_Click(object sender, EventArgs e)
         {
             LoadPlayerAction();
-        }
-
-        protected void DeletePlayerButton_Click(object sender, EventArgs e)
-        {
-            // Use PlayerManager to delete selected Player object
-            // Use Manager to load player data
-            PlayerManager playerManager = new PlayerManager();
-            if (this.EnteredNameTextBox.Text.Length > 0)
-            {
-
-                if (playerManager.DeletePlayerData(this.EnteredNameTextBox.Text))
-                {
-                    // Clear Entered Text box
-                    ClearForm();
-                    this.FeedbackListBox.Items.Add(EnteredNameTextBox.Text + " deleted!");
-                    this.EnteredNameTextBox.Text = "";
-                    this.PlayerNameTextBox.Text = "";
-                }
-            }
-            else
-                this.FeedbackListBox.Items.Add("No player selected to delete");;
         }
 
         protected void AddScoreButton_Click(object sender, EventArgs e)

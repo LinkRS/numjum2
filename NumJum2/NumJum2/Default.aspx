@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>NumJum 2 (3 Aug 2012)</title>
+    <title>NumJum 2 (5 Aug 2012)</title>
 </head>
 <body style="background-color: Silver;">
     <form id="MainForm" runat="server">
@@ -22,12 +22,14 @@
         <Items>
             <asp:MenuItem Text="Load Player" Value="LoadMenu" ToolTip="Load or Create New Player"></asp:MenuItem>
             <asp:MenuItem Text="Save Player" Value="SaveMenu" ToolTip="Save Current Player"></asp:MenuItem>
+            <asp:MenuItem Text="Delete Player" Value="DeleteMenu" ToolTip="Delete Loaded Player"></asp:MenuItem>
             <asp:MenuItem Text="Start Game" Value="StartGameMenu" ToolTip="Start Game"></asp:MenuItem>
+            <asp:MenuItem Text="Administrator" Value="LoginMenu" ToolTip="Display Player Database"></asp:MenuItem>
         
         </Items>
         
             <StaticHoverStyle BackColor="#7C6F57" ForeColor="White" />
-            <StaticMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+            <StaticMenuItemStyle HorizontalPadding="10px" VerticalPadding="2px" />
         
         </asp:Menu>
     </div>
@@ -202,10 +204,6 @@
                 <asp:Button ID="SubmitButton" runat="server" 
                     style="left: 95px; top: 109px; position: absolute" 
                     Text="Submit" onclick="SubmitButton_Click"/>
-                
-                <asp:Button ID="DeletePlayerButton" runat="server"
-                    style="left: 195px; top: 109px; position: absolute"
-                    Text="Delete" onclick="DeletePlayerButton_Click" />
 
                 <asp:Button ID="Cancel" runat="server" 
                     style="left: 295px; top: 109px; position: absolute" 
@@ -230,9 +228,9 @@
         <asp:View ID="View3" runat="server">
             <div style="width: 922px; height: 436px" title="MainView">
             <br/>
-            <center><p>NumJum 2.01 (Build 2.01.080)
+            <center><p>NumJum 2.01 (Build 2.01.098)
             <br />
-            Build Date: 3 August 2012
+            Build Date: 5 August 2012
             <br />
             <br />
             Written By: Rich Selmon
