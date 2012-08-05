@@ -225,8 +225,6 @@ namespace NumJum2
                 ClearForm();
                 this.FeedbackListBox.Items.Add("Welcome, please load a player to begin.");
             }
-            else
-                this.FeedbackListBox.Items.Add("Load Player to Begin!");
         }
 
         protected void MainView_MenuItemClick(object sender, MenuEventArgs e)
