@@ -8,7 +8,7 @@ using System.Web.UI.WebControls;
 
 namespace NumJum2
 {
-    public partial class AdminLogin : System.Web.UI.Page
+    public partial class AdminLogin : System.Web.UI.Page 
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -26,11 +26,8 @@ namespace NumJum2
                 // Only allow in if 'admin' Role
                 if (isRole)
                 {
-                    this.FeedbackLabel.Text = "Access Granted!";
-                    FormsAuthentication.RedirectFromLoginPage(LoginUser.UserName, false); 
+                    FormsAuthentication.RedirectFromLoginPage(LoginUser.UserName, false);
                 }
-                else
-                    this.FeedbackLabel.Text = "User is not allowed";
             } 
         }
     }

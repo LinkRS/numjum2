@@ -228,7 +228,7 @@
         <asp:View ID="View3" runat="server">
             <div style="width: 922px; height: 436px" title="MainView">
             <br/>
-            <center><p>NumJum 2.01 (Build 2.01.099)
+            <center><p>NumJum 2.02 (Build 2.02.008)
             <br />
             Build Date: 5 August 2012
             <br />
